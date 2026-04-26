@@ -3,7 +3,6 @@ package com.ethan.voxyworldgenv2.core;
 import com.ethan.voxyworldgenv2.VoxyWorldGenV2;
 import com.ethan.voxyworldgenv2.integration.VoxyIntegration;
 import com.ethan.voxyworldgenv2.integration.tellus.TellusIntegration;
-import com.ethan.voxyworldgenv2.mixin.MinecraftServerAccess;
 
 import com.ethan.voxyworldgenv2.mixin.ServerChunkCacheMixin;
 import com.ethan.voxyworldgenv2.stats.GenerationStats;
@@ -16,7 +15,7 @@ import net.minecraft.server.level.TicketType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.chunk.ChunkStatus;
 
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
@@ -72,6 +70,9 @@ public final class ChunkGenerationManager {
     private final java.util.Map<java.util.UUID, ChunkPos> lastPlayerPositions = new java.util.concurrent.ConcurrentHashMap<>();
     private java.util.function.BooleanSupplier pauseCheck = () -> false;
 
+    // manual pause (via /voxygen stop)
+    private final AtomicBoolean manuallyPaused = new AtomicBoolean(false);
+
     // worker
     private Thread workerThread;
     private final AtomicBoolean workerRunning = new AtomicBoolean(false);
@@ -112,7 +113,6 @@ public final class ChunkGenerationManager {
     public void shutdown() {
         running.set(false);
         stopWorker();
-        TellusIntegration.shutdown();
         
         for (var entry : dimensionStates.entrySet()) {
             DimensionState state = entry.getValue();
@@ -122,7 +122,6 @@ public final class ChunkGenerationManager {
         }
         
         dimensionStates.clear();
-        pendingTicketOps.clear();
         server = null;
         stats.reset();
         activeTaskCount.set(0);
@@ -143,12 +142,6 @@ public final class ChunkGenerationManager {
         workerRunning.set(false);
         if (workerThread != null) {
             workerThread.interrupt();
-            try {
-                // wait up to 5 seconds for worker to die
-                workerThread.join(5000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
             workerThread = null;
         }
     }
@@ -161,12 +154,7 @@ public final class ChunkGenerationManager {
                     continue;
                 }
 
-                if (!VoxyIntegration.isVoxyRenderingEnabled()) {
-                    Thread.sleep(500);
-                    continue;
-                }
-
-                if (tpsMonitor.isThrottled() || pauseCheck.getAsBoolean()) {
+                if (tpsMonitor.isThrottled() || pauseCheck.getAsBoolean() || manuallyPaused.get()) {
                     Thread.sleep(500);
                     continue;
                 }
@@ -208,11 +196,6 @@ public final class ChunkGenerationManager {
                             final List<ChunkPos> finalSyncBatch = new ArrayList<>(syncBatch);
                             final ServerLevel level = ds.level;
                             final UUID playerUUID = player.getUUID();
-                            // mark all as synced now so we don't retry unloaded chunks in a tight loop;
-                            // the block update mixin will re-sync them when they load naturally
-                            for (ChunkPos syncPos : finalSyncBatch) {
-                                synced.add(syncPos.toLong());
-                            }
                             server.execute(() -> {
                                 ServerPlayer p = server.getPlayerList().getPlayer(playerUUID);
                                 if (p != null) {
@@ -221,8 +204,6 @@ public final class ChunkGenerationManager {
                                         if (c != null) {
                                             com.ethan.voxyworldgenv2.network.NetworkHandler.sendLODData(p, c);
                                         }
-                                        // if c == null the chunk is not loaded; the BlockUpdateMixin will
-                                        // handle syncing it when it gets loaded into memory later
                                     }
                                 }
                             });
@@ -230,10 +211,7 @@ public final class ChunkGenerationManager {
                         }
                     }
                     
-                    if (workDispatched) {
-                        Thread.sleep(10); // small delay to prevent overwhelming network/server tasks
-                        continue; 
-                    }
+                    if (workDispatched) continue; 
                     
                     Thread.sleep(100);
                     continue;
@@ -328,7 +306,7 @@ public final class ChunkGenerationManager {
                             for (ChunkPos pos : actuallyGenerate) {
                                 ((ServerChunkCacheMixin) cache).invokeGetChunkFutureMainThread(pos.x, pos.z, ChunkStatus.FULL, true)
                                     .whenCompleteAsync((result, throwable) -> {
-                                        if (throwable == null && result != null && result.isSuccess() && result.orElse(null) instanceof LevelChunk chunk) {
+                                        if (throwable == null && result != null && result.left().isPresent() && result.left().get() instanceof LevelChunk chunk) {
                                             onSuccess(finalState, pos);
                                             if (!chunk.isEmpty()) {
                                                 VoxyIntegration.ingestChunk(chunk);
@@ -495,9 +473,9 @@ public final class ChunkGenerationManager {
         while ((op = pendingTicketOps.poll()) != null) {
             ServerChunkCache cache = op.level().getChunkSource();
             if (op.add()) {
-                cache.addTicketWithRadius(TicketType.FORCED, op.pos(), 0);
+                cache.addRegionTicket(TicketType.FORCED, op.pos(), 0, op.pos());
             } else {
-                cache.removeTicketWithRadius(TicketType.FORCED, op.pos(), 0);
+                cache.removeRegionTicket(TicketType.FORCED, op.pos(), 0, op.pos());
             }
             modifiedLevels.add(op.level());
         }
@@ -516,7 +494,6 @@ public final class ChunkGenerationManager {
     
     private void cleanupTask(ServerLevel level, ChunkPos pos) {
         queueTicketRemove(level, pos);
-        ((MinecraftServerAccess) server).setEmptyTicks(0);
         DimensionState state = dimensionStates.get(level.dimension());
         if (state != null) completeTask(state, pos);
     }
@@ -560,14 +537,9 @@ public final class ChunkGenerationManager {
         configReloadScheduled.set(true);
     }
     
-    public boolean isChunkCompleted(net.minecraft.server.level.ServerLevel level, net.minecraft.world.level.ChunkPos pos) {
-        DimensionState state = dimensionStates.get(level.dimension());
-        return state != null && state.completedChunks.contains(pos.toLong());
-    }
-
     public GenerationStats getStats() { return stats; }
     public int getActiveTaskCount() { return activeTaskCount.get(); }
-    public int getRemainingInRadius() {
+    public int getRemainingInRadius() { 
         if (currentDimensionKey == null) return 0;
         DimensionState state = dimensionStates.get(currentDimensionKey);
         return state != null ? state.remainingInRadius.get() : 0; 
@@ -577,5 +549,21 @@ public final class ChunkGenerationManager {
     
     public void setPauseCheck(java.util.function.BooleanSupplier check) {
         this.pauseCheck = check;
+    }
+
+    public void pauseGeneration() {
+        manuallyPaused.set(true);
+        VoxyWorldGenV2.LOGGER.info("voxy world gen: generation paused");
+    }
+
+    public void resumeGeneration() {
+        manuallyPaused.set(false);
+        VoxyWorldGenV2.LOGGER.info("voxy world gen: generation resumed");
+    }
+
+    public boolean isManuallyPaused() { return manuallyPaused.get(); }
+
+    public boolean isRunning() {
+        return running.get() && !manuallyPaused.get();
     }
 }

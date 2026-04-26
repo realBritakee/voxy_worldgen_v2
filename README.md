@@ -2,32 +2,46 @@
 
 ![Logo](src/main/resources/logo.png)
 
-This is a rewrite of my old Voxy World Gen mod, this mod is NOT a fork of the passive chunk generator mod and instead is a entirely different mod.
+Background chunk pre-generation for [Voxy](https://modrinth.com/mod/voxy). Generates chunks silently in the background and auto-ingests them into Voxy's LOD system — no need to manually fly around.
 
 ## Features
 
-- Generates chunks very fast in the background and auto-ingest them with voxy.
-- Configurable generation speed and queue size.
-- Tellus integration. https://github.com/Yucareux/Tellus
+- Fast background chunk generation with automatic Voxy ingestion
+- Configurable generation speed and queue size
+- TPS-aware throttling — backs off automatically when server is under load
+- Tellus integration for terrain sampling
 - Server-side support
+- `/voxygen` commands for runtime control
+- F3 debug overlay showing generation stats, rate, ETA
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `/voxygen start` | Resume background generation (also enables HUD) |
+| `/voxygen stop` | Pause background generation (also hides HUD) |
+| `/voxygen status` | Show current status, active tasks, remaining chunks |
+| `/voxygen hud` | Toggle the F3 debug overlay independently |
+
+> Requires OP level 2.
+
+## HUD
+
+Open F3 to see generation stats in the bottom-right corner: status, chunks completed, skipped, remaining, active tasks, rate (chunks/sec), and ETA.
 
 ## Dependencies
 
-- **Minecraft**: 1.21.6 - 1.21.11 (Tested on 1.21.11, anything less is considered unstable and may not work)
-- **Fabric Loader**: >= 0.16.0
-- **Java**: 21 (Required)
+- **Minecraft**: 1.20.1
+- **Fabric Loader**: >= 0.18.4
+- **Java**: 17+
 - **Fabric API**
-- **Cloth Config**: >= 15.0.127
+- **Cloth Config**: >= 11.1.136
+- **Voxy**: compatible release for 1.20.1
 
 ## Building
 
-This project requires Java 21.
-
 ```bash
-# Clone the repo
-git clone https://github.com/iSeeEthan/voxy_worldgen_v2.git
-
-# Build
+git clone <repo>
 ./gradlew build
 ```
 
@@ -35,7 +49,7 @@ Artifacts are output to `build/libs/`.
 
 ## Configuration
 
-Config files are located in `config/voxyworldgenv2.json`.
+Config file: `config/voxyworldgenv2.json`
 
 ## License
 

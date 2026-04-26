@@ -1,10 +1,10 @@
 package com.ethan.voxyworldgenv2;
 
+import com.ethan.voxyworldgenv2.command.VoxyGenCommand;
 import com.ethan.voxyworldgenv2.core.ChunkGenerationManager;
 import com.ethan.voxyworldgenv2.event.ServerEventHandler;
 import com.ethan.voxyworldgenv2.network.NetworkHandler;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -19,6 +19,7 @@ public class VoxyWorldGenV2 implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("voxy world gen v2 initializing");
         com.ethan.voxyworldgenv2.core.Config.load();
+        VoxyGenCommand.register();
         NetworkHandler.init();
         
         // server lifecycle events
@@ -31,8 +32,5 @@ public class VoxyWorldGenV2 implements ModInitializer {
         
         // server tick event
         ServerTickEvents.END_SERVER_TICK.register(ServerEventHandler::onServerTick);
-
-        // sync LOD data when a completed chunk loads into memory (issue #50)
-        ServerChunkEvents.CHUNK_LOAD.register(ServerEventHandler::onChunkLoad);
     }
 }

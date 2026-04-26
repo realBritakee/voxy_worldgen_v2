@@ -25,19 +25,6 @@ public final class TellusIntegration {
 
     private TellusIntegration() {}
 
-    public static void shutdown() {
-        if (workerPool != null) {
-            workerPool.shutdownNow();
-            try {
-                workerPool.awaitTermination(2, TimeUnit.SECONDS);
-            } catch (InterruptedException ignored) {}
-            workerPool = null;
-        }
-        buildingChunks.clear();
-        initialized = false;
-        VoxyWorldGenV2.LOGGER.info("tellus integration shutdown");
-    }
-
     private static void initialize() {
         if (initialized) return;
         initialized = true;
@@ -267,7 +254,7 @@ public final class TellusIntegration {
             TellusWorldFeatures.placeUnderwaterVegetation(pos, data, mapper, propBlocks, biomeIds, hasWaters);
 
             long brightAir = VoxyIngester.composeId(0, 0, 15);
-            int minSY = level.getMinSectionY();
+            int minSY = level.getMinSection();
             int sCount = level.getSectionsCount();
 
             int maxHV = -64;

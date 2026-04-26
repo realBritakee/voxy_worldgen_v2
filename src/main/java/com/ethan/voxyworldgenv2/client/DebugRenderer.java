@@ -3,7 +3,6 @@ package com.ethan.voxyworldgenv2.client;
 import com.ethan.voxyworldgenv2.core.ChunkGenerationManager;
 import com.ethan.voxyworldgenv2.integration.VoxyIntegration;
 import com.ethan.voxyworldgenv2.stats.GenerationStats;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,14 +11,10 @@ public final class DebugRenderer {
     
     private DebugRenderer() {}
     
-    public static void render(GuiGraphics graphics, DeltaTracker tickDelta) {
+    public static void render(GuiGraphics graphics, float tickDelta) {
         if (!com.ethan.voxyworldgenv2.core.Config.DATA.showF3MenuStats) return;
         
         Minecraft mc = Minecraft.getInstance();
-        
-        if (!mc.getDebugOverlay().showDebugScreen()) {
-            return;
-        }
         
         Font font = mc.font;
         int screenWidth = mc.getWindow().getGuiScaledWidth();
@@ -46,7 +41,9 @@ public final class DebugRenderer {
         }
         
         String status;
-        if (manager.isThrottled()) {
+        if (manager.isManuallyPaused()) {
+            status = "§7paused";
+        } else if (manager.isThrottled()) {
             status = "§cthrottled (low tps)";
         } else if (remaining == 0) {
             status = "§adone";
