@@ -105,9 +105,25 @@ public final class ChunkGenerationManager {
         // unpaused by default
         this.pauseCheck = () -> false; 
         Config.load();
+<<<<<<< Updated upstream
         this.throttle = new Semaphore(Config.DATA.maxActiveTasks);
         startWorker();
         VoxyWorldGenV2.LOGGER.info("voxy world gen initialized");
+=======
+        // Start paused unless autoStartOnLoad is enabled
+        boolean autoStart = Config.DATA.autoStartOnLoad;
+        this.manuallyPaused.set(!autoStart);
+        // HUD matches generation state
+        Config.DATA.showF3MenuStats = autoStart;
+        Config.save();
+        this.throttle = new Semaphore(Config.DATA.maxActiveTasks);
+        startWorker();
+        if (autoStart) {
+            VoxyWorldGenV2.LOGGER.info("voxy world gen initialized (auto-started)");
+        } else {
+            VoxyWorldGenV2.LOGGER.info("voxy world gen initialized (paused — use /voxygen start)");
+        }
+>>>>>>> Stashed changes
     }
     
     public void shutdown() {

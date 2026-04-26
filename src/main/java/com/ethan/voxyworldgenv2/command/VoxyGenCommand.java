@@ -32,7 +32,13 @@ public class VoxyGenCommand {
         mgr.resumeGeneration();
         Config.DATA.showF3MenuStats = true;
         Config.save();
+<<<<<<< Updated upstream
         ctx.getSource().sendSuccess(() -> Component.literal("[VoxyGen] Generation started."), true);
+=======
+        ctx.getSource().sendSuccess(() -> success("Generation started.").append(
+            Component.literal(" Use /voxygen hud to hide the HUD.").withStyle(ChatFormatting.GRAY)
+        ), true);
+>>>>>>> Stashed changes
         return 1;
     }
 
@@ -41,6 +47,7 @@ public class VoxyGenCommand {
         mgr.pauseGeneration();
         Config.DATA.showF3MenuStats = false;
         Config.save();
+<<<<<<< Updated upstream
         ctx.getSource().sendSuccess(() -> Component.literal("[VoxyGen] Generation stopped."), true);
         return 1;
     }
@@ -50,6 +57,17 @@ public class VoxyGenCommand {
         Config.save();
         boolean enabled = Config.DATA.showF3MenuStats;
         ctx.getSource().sendSuccess(() -> Component.literal(enabled ? "[VoxyGen] HUD enabled." : "[VoxyGen] HUD disabled."), false);
+=======
+        ctx.getSource().sendSuccess(() -> success("Generation stopped."), true);
+>>>>>>> Stashed changes
+        return 1;
+    }
+
+    private static int executeHud(CommandContext<CommandSourceStack> ctx) {
+        Config.DATA.showF3MenuStats = !Config.DATA.showF3MenuStats;
+        Config.save();
+        boolean enabled = Config.DATA.showF3MenuStats;
+        ctx.getSource().sendSuccess(() -> enabled ? success("HUD enabled.") : success("HUD disabled."), false);
         return 1;
     }
 
