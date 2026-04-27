@@ -72,3 +72,18 @@ See [CHANGELOG.md](CHANGELOG.md) for a full list of changes.
 ## License
 
 CUSTOM, refer to LICENSE file for more information.
+
+---
+
+## Related Projects
+
+### Voxy (LoD mod)
+The Voxy LoD rendering mod this addon is built for.
+
+- **1.20.1 / 1.21.1** → [github.com/realBritakee/voxy-neoforge](https://github.com/realBritakee/voxy-neoforge) *(custom NeoForge port with Physics Mod + ShaderLoader fixes)*
+- **Other versions** → [modrinth.com/mod/voxy](https://modrinth.com/mod/voxy) *(official)*
+
+### Photon Shaders — Reimagined
+Custom Photon fork with native Physics Mod ocean support — fully compatible with Voxy World Gen V2.
+
+- **All versions** → [github.com/realBritakee/photon](https://github.com/realBritakee/photon) *(always up to date)*
