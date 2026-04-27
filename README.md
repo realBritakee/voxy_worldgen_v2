@@ -4,6 +4,11 @@
 
 Background chunk pre-generation for [Voxy](https://modrinth.com/mod/voxy). Generates chunks silently in the background and auto-ingests them into Voxy's LOD system — no need to manually fly around.
 
+
+> **Works best with:**
+> 🧊 [Voxy — NeoForge Port](https://github.com/realBritakee/voxy-neoforge) — custom Voxy build for 1.20.1/1.21.1 with Physics Mod + ShaderLoader fixes · [other versions](https://modrinth.com/mod/voxy)
+> 🎨 [Photon Shaders — Reimagined](https://github.com/realBritakee/photon) — custom Photon fork with Physics Mod ocean support
+
 ## Features
 
 - Fast background chunk generation with automatic Voxy ingestion
