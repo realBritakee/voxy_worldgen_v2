@@ -1,0 +1,69 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug] Describe your issue"
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill in as much detail as possible so we can reproduce and fix the issue.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the bug and what you expected to happen instead.
+      placeholder: Describe the issue and steps to reproduce it.
+    validations:
+      required: true
+  - type: dropdown
+    id: mc-version
+    attributes:
+      label: Minecraft Version
+      options:
+        - 1.21.1
+        - 1.21
+        - 1.20.1
+        - 1.20
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: voxy-worldgen-version
+    attributes:
+      label: Voxy World Gen V2 Version
+      description: Found in your mod list or the jar filename.
+      placeholder: e.g. 1.0.5
+    validations:
+      required: true
+  - type: input
+    id: voxy-version
+    attributes:
+      label: Voxy Version
+      description: The Voxy mod version you are using.
+      placeholder: e.g. 0.3.2
+    validations:
+      required: true
+  - type: dropdown
+    id: loader
+    attributes:
+      label: Mod Loader
+      options:
+        - Fabric
+        - NeoForge
+        - Forge
+        - Quilt
+    validations:
+      required: true
+  - type: input
+    id: loader-version
+    attributes:
+      label: Loader Version
+      placeholder: e.g. Fabric 0.16.5 / NeoForge 21.1.80
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Log Output
+      description: Paste any relevant crash report or log lines here.
+      render: text
