@@ -52,7 +52,7 @@ Your LoD map fills in automatically without any manual effort or commands, prior
 
 ---
 
-## ✦ DEVELOPMENT
+![Development](https://raw.githubusercontent.com/realBritakee/mc-publish/main/images/Development.png)
 
 ### Building from Source
 
