@@ -2,7 +2,7 @@
 
 **Minecraft 1.20.1 / 1.21.1 - NeoForge / Forge**
 
-A custom NeoForge port of [Voxy World Gen V2](https://modrinth.com/mod/voxy-worldgen) - the background chunk pre-generation companion mod for Voxy. Required for the best Voxy LoD experience.
+A custom NeoForge port of [Voxy World Gen V2](https://github.com/realBritakee/voxy_worldgen_v2) - the background chunk pre-generation companion mod for Voxy. Required for the best Voxy LoD experience.
 
 ---
 
@@ -27,7 +27,7 @@ Voxy needs chunks to be generated before it can build LoD data for them. Without
 ## Related
 
 - [Voxy NeoForge](https://github.com/realBritakee/voxy-neoforge) - the LoD rendering mod this companion supports
-- [Official Voxy World Gen](https://modrinth.com/mod/voxy-worldgen) - upstream Fabric releases
+- [Official Voxy World Gen](https://github.com/realBritakee/voxy_worldgen_v2) - upstream Fabric releases
 
 ---
 

@@ -6,7 +6,7 @@
 
 <div align="center">
 
-[![Discord](https://img.shields.io/badge/DISCORD-SERVER-F16436?labelColor=2d2d2d&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/gCRv62araB) &nbsp; [![CurseForge](https://img.shields.io/badge/CURSEFORGE-PROJECT-F16436?labelColor=2d2d2d&logo=curseforge&logoColor=white&style=flat-square)](https://www.curseforge.com/minecraft/mc-mods/voxy-worldgen-v2) &nbsp; [![Modrinth](https://img.shields.io/badge/MODRINTH-PROJECTS-00AF5C?labelColor=2d2d2d&logo=modrinth&logoColor=white&style=flat-square)](https://modrinth.com/user/britakee)
+[![Discord](https://img.shields.io/badge/DISCORD-SERVER-F16436?labelColor=2d2d2d&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/gCRv62araB) &nbsp; [![CurseForge](https://img.shields.io/badge/CURSEFORGE-PROJECT-F16436?labelColor=2d2d2d&logo=curseforge&logoColor=white&style=flat-square)](https://github.com/realBritakee/voxy_worldgen_v2-v2) &nbsp; [![Modrinth](https://img.shields.io/badge/MODRINTH-PROJECTS-00AF5C?labelColor=2d2d2d&logo=modrinth&logoColor=white&style=flat-square)](https://modrinth.com/user/britakee)
 
 <br>
 
@@ -48,7 +48,7 @@ Your LoD map fills in automatically without any manual effort or commands, prior
 ![Dependencies](https://raw.githubusercontent.com/realBritakee/mc-publish/main/images/Dependencies.png)
 
 ### Required
-- [Voxy](https://modrinth.com/mod/voxy) - The LoD rendering mod this companion supports.
+- [Voxy NeoForge](https://github.com/realBritakee/voxy-neoforge) - The LoD rendering mod this companion supports.
 
 ---
 
