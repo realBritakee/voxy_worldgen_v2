@@ -18,7 +18,7 @@
 
 **The background chunk pre-generation companion mod for Voxy.**
 
-> Supports **NeoForge** | **Forge** — Minecraft **1.21.1 & 1.20.1**
+> Supports **NeoForge** | **Forge** - Minecraft **1.21.1 & 1.20.1**
 
 ---
 
@@ -32,16 +32,16 @@ Your LoD map fills in automatically without any manual effort or commands, prior
 
 ![World Gen](https://raw.githubusercontent.com/realBritakee/mc-publish/main/images/World%20Gen.png)
 
-- **Automatic Background Generation** — No commands needed, runs automatically in the background.
-- **Smart Prioritization** — Prioritizes chunks and areas near the player first to ensure immediate vistas.
-- **Seamless Integration** — Works alongside Voxy's LoD rendering seamlessly.
+- **Automatic Background Generation** - No commands needed, runs automatically in the background.
+- **Smart Prioritization** - Prioritizes chunks and areas near the player first to ensure immediate vistas.
+- **Seamless Integration** - Works alongside Voxy's LoD rendering seamlessly.
 
 ---
 
 ![Features](https://raw.githubusercontent.com/realBritakee/mc-publish/main/images/Features.png)
 
-- **Configurable Processing** — Fully configurable radius and generation speed to match your server or client CPU power.
-- **Performance Conscious** — Ensures background generation doesn't completely overwhelm the main tick thread.
+- **Configurable Processing** - Fully configurable radius and generation speed to match your server or client CPU power.
+- **Performance Conscious** - Ensures background generation doesn't completely overwhelm the main tick thread.
 
 ---
 
