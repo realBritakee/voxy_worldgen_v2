@@ -30,7 +30,7 @@ Your LoD map fills in automatically without any manual effort or commands, prior
 
 ---
 
-![World Pre-Generation](https://raw.githubusercontent.com/realBritakee/mc-publish/main/images/World%20Pre-Generation.png)
+![World Gen](https://raw.githubusercontent.com/realBritakee/mc-publish/main/images/World%20Gen.png)
 
 - **Automatic Background Generation** — No commands needed, runs automatically in the background.
 - **Smart Prioritization** — Prioritizes chunks and areas near the player first to ensure immediate vistas.
