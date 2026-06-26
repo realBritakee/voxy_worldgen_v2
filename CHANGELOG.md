@@ -1,25 +1,25 @@
-# Changelog — Voxy WorldGen V2 (1.21.1)
+# Changelog - Voxy WorldGen V2 (1.21.1)
 
 All changes to the Voxy WorldGen V2 mod for Minecraft 1.21.1.
 
 ---
 
-## [2.2.1] — 2026-04-26
+## [2.2.1] - 2026-04-26
 
 ### Added
-- `/voxygen start` — resume background chunk generation
-- `/voxygen stop` — pause background chunk generation
-- `/voxygen status` — show generation status, active tasks, remaining chunks, throttle state
+- `/voxygen start` - resume background chunk generation
+- `/voxygen stop` - pause background chunk generation
+- `/voxygen status` - show generation status, active tasks, remaining chunks, throttle state
 - Colored chat messages: gold `Voxygen |` prefix, green for success, red for errors
-- Smart state detection — warns if generation is already running/stopped
+- Smart state detection - warns if generation is already running/stopped
 - Status display shows PAUSED (red), THROTTLED (yellow), or RUNNING (green) with colored stats
 - F3 debug overlay shows "paused" status (grey) when generation is manually stopped
-- Generation starts **paused** on world load — requires `/voxygen start` to begin
-- `autoStartOnLoad` config option — set to `true` to auto-start generation on world load (default: `false`)
+- Generation starts **paused** on world load - requires `/voxygen start` to begin
+- `autoStartOnLoad` config option - set to `true` to auto-start generation on world load (default: `false`)
 
 ### Changed
-- Worker thread stays alive when paused (500ms sleep loop) — no thread recreation on resume
-- `manuallyPaused` flag is independent from TPS throttle — both can be active simultaneously
+- Worker thread stays alive when paused (500ms sleep loop) - no thread recreation on resume
+- `manuallyPaused` flag is independent from TPS throttle - both can be active simultaneously
 - Log message on initialize reflects auto-start vs paused state
 
 ### Fixed
@@ -27,7 +27,7 @@ All changes to the Voxy WorldGen V2 mod for Minecraft 1.21.1.
 
 ---
 
-## [2.2.0] — Initial
+## [2.2.0] - Initial
 
 - Background chunk pre-generation with automatic Voxy ingestion
 - TPS-aware throttling
