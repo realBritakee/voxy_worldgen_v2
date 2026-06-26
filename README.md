@@ -45,14 +45,6 @@ Your LoD map fills in automatically without any manual effort or commands, prior
 
 ---
 
-![Data Packs](https://raw.githubusercontent.com/realBritakee/mc-publish/main/images/Data%20Packs.png)
-
-No standard datapacks required. Provides its own specific configuration files to tune background generation speeds and radii.
-
-📄 Full documentation: **[GUIDE.md](GUIDE.md)**
-
----
-
 ![Dependencies](https://raw.githubusercontent.com/realBritakee/mc-publish/main/images/Dependencies.png)
 
 ### Required
