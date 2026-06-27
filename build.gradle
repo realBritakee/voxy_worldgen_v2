@@ -56,3 +56,17 @@ jar {
         rename { "${it}_${mod_name}" }
     }
 }
+
+
+tasks.withType(Jar).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
+
+
+
+tasks.register('copyToUnifiedMods', Copy) {
+    def mcVersion = project.hasProperty('minecraft_version') ? project.property('minecraft_version') : "unknown"
+    from layout.buildDirectory.dir("libs")
+    into file("${project.projectDir}/../../Mods/${mcVersion}")
+    include "*.jar"
+    exclude "*-dev.jar", "*-sources.jar", "*-javadoc.jar"
+}
+tasks.build.finalizedBy('copyToUnifiedMods')
